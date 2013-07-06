@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="TimeTracker.TagSelector.TagSelector"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:tagSelector="clr-namespace:TimeTracker.TagSelector"
+             mc:Ignorable="d" 
+             x:Name="Control"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate DataType="{x:Type tagSelector:TagSelectorFreeTextItem}">
+            <tagSelector:TagSelectorTextEntry 
+                TagSelectorFreeTextItem="{Binding Mode=OneWay}" 
+                TagDetector="{Binding Mode=OneWay}"
+                />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type tagSelector:TagSelectorTagItem}">
+            <Border BorderThickness="1" BorderBrush="LightSalmon" CornerRadius="1">
+                <ContentControl
+                    Content="{Binding Path=Item,Mode=OneWay}"></ContentControl>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <ListView
+            BorderThickness="0"
+            x:Name="c_Items"
+            ItemsSource="{Binding ElementName=Control,Path=Items,Mode=OneWay}"
+            PreviewKeyDown="c_Items_PreviewKeyDown"
+            >
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel IsItemsHost="True" Orientation="Horizontal"></WrapPanel>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ListView>
+    </Grid>
+</UserControl>

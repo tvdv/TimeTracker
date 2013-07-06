@@ -1,0 +1,52 @@
+﻿<Window x:Class="TimeTracker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:model="clr-namespace:TimeTracker.Model" xmlns:timeTracker="clr-namespace:TimeTracker" mc:Ignorable="d"
+        Title="MainWindow" Height="350" Width="650" d:DataContext="{d:DesignInstance timeTracker:ViewModel }"
+        Loaded="MainWindow_OnLoaded"
+        Closing="MainWindow_OnClosing"
+        >
+    <Window.Resources>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </Window.Resources>
+    <DockPanel>
+        <StackPanel Orientation="Horizontal"
+                    DockPanel.Dock="Bottom"
+                    >
+            <TextBlock Text="{Binding Path=State,Mode=OneWay}" ></TextBlock>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    DockPanel.Dock="Top">
+            
+            <Button Command="{Binding Path=SaveCommand}">Save</Button>
+          
+        </StackPanel>
+        <TabControl>
+            <TabControl.Items>
+                <TabItem Header="Entries">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Top">
+                            <Button Command="{Binding Path=AddEntryCommand}">Add Entry</Button>
+                        </StackPanel>
+                        <ItemsControl
+                            ItemsSource="{Binding Path=Entries,Mode=OneWay}">
+                        </ItemsControl></DockPanel>
+                </TabItem>
+                <TabItem Header="Tags">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Top">
+                            <Button Command="{Binding Path=AddTagCommand}">Add Tag</Button>
+                        </StackPanel>
+                        <ItemsControl
+                            ItemsSource="{Binding Path=Tags,Mode=OneWay}"
+                            />
+                    </DockPanel>
+                </TabItem>
+            </TabControl.Items>
+        </TabControl>
+    </DockPanel>
+</Window>

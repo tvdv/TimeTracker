@@ -1,4 +1,6 @@
 TimeTracker
 ===========
 
-Simple windows app to record your time
+Simple windows app to record your time.
+
+Still in development.
