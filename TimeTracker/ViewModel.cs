@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 using TimeTracker.Annotations;
 using TimeTracker.Model;
 using TimeTracker.TimeEntryView;
@@ -48,7 +49,7 @@ namespace TimeTracker
             get { return _model.Tags; }
         }
 
-        public RelayCommand AddTagCommand
+        public ICommand AddTagCommand
         {
             get
             {
@@ -56,14 +57,24 @@ namespace TimeTracker
             }
         }
 
-        public RelayCommand SaveCommand
+
+
+        public ICommand SaveCommand
         {
             get { return new RelayCommand(()=> _model.BeginSave()); }
         }
 
-        public RelayCommand AddEntryCommand
+        public ICommand AddEntryCommand
         {
             get { return new RelayCommand(() => _model.Entries.Add(new TimeEntry())); }
+        }
+
+        public ICommand RemoveEntryCommand
+        {
+            get
+            {
+                return new RelayCommand<TimeEntryEditViewModel>( e=> _model.Entries.Remove(e.Model));
+            }
         }
 
         public Model.Model.ModelState State

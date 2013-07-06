@@ -14,10 +14,11 @@
     </UserControl.Resources>
     <Grid>
           <Grid.ColumnDefinitions>
+            <ColumnDefinition />
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>  
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -47,6 +48,7 @@
             />
         <TextBox 
             Grid.Row="2"
+            Grid.Column="1"
             Grid.ColumnSpan="3"
             Text="{Binding Path=Model.Note,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
 

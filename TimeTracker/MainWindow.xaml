@@ -3,13 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:model="clr-namespace:TimeTracker.Model" xmlns:timeTracker="clr-namespace:TimeTracker" mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="650" d:DataContext="{d:DesignInstance timeTracker:ViewModel }"
+        xmlns:model="clr-namespace:TimeTracker.Model" xmlns:timeTracker="clr-namespace:TimeTracker"
+        xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase" mc:Ignorable="d"
+        Title="Time Tracker" Height="350" Width="650" d:DataContext="{d:DesignInstance timeTracker:ViewModel }"
         Loaded="MainWindow_OnLoaded"
         Closing="MainWindow_OnClosing"
         >
     <Window.Resources>
-        <ResourceDictionary Source="Styles.xaml"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary>
+                    <CollectionViewSource Source="{Binding Path=Entries}"
+                                          x:Key="EntriesSource"
+                                          >
+                        <CollectionViewSource.SortDescriptions>
+                            <componentModel:SortDescription  PropertyName="Model.Start"/>
+                        </CollectionViewSource.SortDescriptions>
+                    </CollectionViewSource>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+        
     </Window.Resources>
     <DockPanel>
         <StackPanel Orientation="Horizontal"
@@ -32,7 +47,7 @@
                             <Button Command="{Binding Path=AddEntryCommand}">Add Entry</Button>
                         </StackPanel>
                         <ItemsControl
-                            ItemsSource="{Binding Path=Entries,Mode=OneWay}">
+                            ItemsSource="{Binding Source={StaticResource EntriesSource}}">
                         </ItemsControl></DockPanel>
                 </TabItem>
                 <TabItem Header="Tags">

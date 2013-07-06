@@ -14,7 +14,8 @@ namespace TimeTracker.Model
         {
             Tags=new ObservableCollection<Tag>();
             Start = DateTime.Now;
-            
+            End = Start;
+
         }
         private DateTime _start;
         private DateTime _end;
