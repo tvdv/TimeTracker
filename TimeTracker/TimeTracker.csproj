@@ -65,6 +65,7 @@
       <DependentUpon>TagSelectorTextEntry.xaml</DependentUpon>
     </Compile>
     <Compile Include="TimeEntryView\TimeEntryEditViewModel.cs" />
+    <Compile Include="TimeEntryView\TimeEntryTagAssociationViewModel.cs" />
     <Compile Include="TimeEntryView\TimeEntryView.xaml.cs">
       <DependentUpon>TimeEntryView.xaml</DependentUpon>
     </Compile>

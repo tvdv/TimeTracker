@@ -43,6 +43,8 @@ namespace TimeTracker.Model
             }
         }
 
+
+
         public string Note
         {
             get { return _note; }

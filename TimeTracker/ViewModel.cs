@@ -16,7 +16,6 @@ namespace TimeTracker
     class ViewModel : INotifyPropertyChanged
     {
         private readonly Model.Model _model;
-        private Model.Model.ModelState _state;
 
         private VmObservableCollection<TimeEntryEditViewModel, TimeEntry> _entryVms; 
         public ViewModel(Model.Model model)
@@ -24,7 +23,7 @@ namespace TimeTracker
             _model = model;
             _model.PropertyChanged += _model_PropertyChanged;
 
-            _entryVms=new VmObservableCollection<TimeEntryEditViewModel, TimeEntry>(_model.Entries, entry => new TimeEntryEditViewModel(entry,this.Tags),
+            _entryVms = new VmObservableCollection<TimeEntryEditViewModel, TimeEntry>(_model.Entries, entry => new TimeEntryEditViewModel(entry, this.Tags, this.RemoveEntryCommand),
                 (modelentry, vm) => vm.Model==modelentry);
 
         }

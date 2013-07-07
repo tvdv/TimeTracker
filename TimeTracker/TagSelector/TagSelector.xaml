@@ -15,10 +15,8 @@
                 />
         </DataTemplate>
         <DataTemplate DataType="{x:Type tagSelector:TagSelectorTagItem}">
-            <Border BorderThickness="1" BorderBrush="LightSalmon" CornerRadius="1">
-                <ContentControl
-                    Content="{Binding Path=Item,Mode=OneWay}"></ContentControl>
-            </Border>
+            <ContentControl
+                Content="{Binding Path=Item,Mode=OneWay}"></ContentControl>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>

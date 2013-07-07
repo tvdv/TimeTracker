@@ -20,6 +20,7 @@
                         <CollectionViewSource.SortDescriptions>
                             <componentModel:SortDescription  PropertyName="Model.Start"/>
                         </CollectionViewSource.SortDescriptions>
+                        
                     </CollectionViewSource>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>

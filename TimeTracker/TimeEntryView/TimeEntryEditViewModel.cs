@@ -15,11 +15,15 @@ namespace TimeTracker.TimeEntryView
     {
         private readonly TimeEntry _entry;
         private readonly ObservableCollection<Tag> _availableTags;
+        private readonly ICommand _deleteEntryCommand;
+        private VmObservableCollection<TimeEntryTagAssociationViewModel, Tag> _associatedTags;
 
-        public TimeEntryEditViewModel(TimeEntry entry, ObservableCollection<Tag> availableTags)
+        public TimeEntryEditViewModel(TimeEntry entry, ObservableCollection<Tag> availableTags,ICommand deleteEntryCommand)
         {
             _entry = entry;
             _availableTags = availableTags;
+            _deleteEntryCommand = deleteEntryCommand;
+            _associatedTags=new VmObservableCollection<TimeEntryTagAssociationViewModel, Tag>(entry.Tags,tag => new TimeEntryTagAssociationViewModel(tag,DeleteTagCommand),(tag, model) => model.Tag==tag );
         }
 
         public ICommand AddTagCommand
@@ -28,6 +32,14 @@ namespace TimeTracker.TimeEntryView
             {
                 return new RelayCommand<Tag>(z=>_entry.Tags.Add(z));
             }
+        }
+        public ICommand DeleteTagCommand
+        {
+            get { return new RelayCommand<Tag>(z => _entry.Tags.Remove(z)); }
+        }
+        public ICommand DeleteCommand
+        {
+            get { return _deleteEntryCommand; }
         }
 
         public DateTime Day
@@ -66,7 +78,11 @@ namespace TimeTracker.TimeEntryView
             
         }
 
-        
+        public VmObservableCollection<TimeEntryTagAssociationViewModel, Tag> AssociatedTags
+        {
+            get { return _associatedTags; }
+        }
+
 
         public TimeSpan Length
         {

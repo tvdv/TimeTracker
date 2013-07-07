@@ -8,16 +8,31 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300" d:DataContext="{d:DesignInstance timeEntryView:TimeEntryEditViewModel}">
     <UserControl.Resources>
+        <DataTemplate DataType="{x:Type timeEntryView:TimeEntryTagAssociationViewModel}">
+            <Border BorderThickness="1" BorderBrush="LightSalmon" CornerRadius="1">
+                <StackPanel Orientation="Horizontal">
+                    <ContentControl
+                         Margin="3"
+                        Content="{Binding Path=Tag,Mode=OneWay}"></ContentControl>
+                    <Button 
+                        Margin="3"
+                        Content="X" Command="{Binding Path=DeleteAssociationCommand}" CommandParameter="{Binding Path=Tag}"/>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+        
         <DataTemplate DataType="{x:Type model:Tag}">
             <TextBlock Text="{Binding Path=Name,Mode=OneWay}"/>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
           <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
             <ColumnDefinition />
             <ColumnDefinition/>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="3*"/>
         </Grid.ColumnDefinitions>  
         <Grid.RowDefinitions>
@@ -25,30 +40,40 @@
             <RowDefinition Height="5"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        <DatePicker SelectedDate="{Binding Path=Day,Mode=TwoWay}"></DatePicker>
-
-        <TextBox 
+        <Button 
+            Margin="5"
+            Content="X" 
+            CommandParameter="{Binding}"
+            Command="{Binding Path=DeleteCommand}"/>
+        <DatePicker 
             Grid.Column="1"
-            Text="{Binding Path=StartTime,Mode=TwoWay}"></TextBox>
+            SelectedDate="{Binding Path=Day,Mode=TwoWay}"></DatePicker>
 
         <TextBox 
             Grid.Column="2"
+            Text="{Binding Path=StartTime,Mode=TwoWay}"></TextBox>
+
+        <TextBox 
+            Grid.Column="3"
             Text="{Binding Path=EndTime,Mode=TwoWay}"></TextBox>
 
            <TextBlock 
-               Grid.Column="3"
+               VerticalAlignment="Center"
+               Margin="3"
+               Grid.Column="4"
                Text="{Binding Path=Length,Mode=OneWay}"/>
         
+        <TextBlock
+            Grid.Column="5" Text="Tags:"></TextBlock>
         <tagSelector:TagSelector
-            Grid.Column="4"
+            Grid.Column="6"
             AvailableTags="{Binding Path=AvailableTags,Mode=OneWay}"
             AddTagCommand="{Binding Path=AddTagCommand}"
-            Tags="{Binding Path=Model.Tags,Mode=OneWay}"
+            Tags="{Binding Path=AssociatedTags,Mode=OneWay}"
             />
         <TextBox 
             Grid.Row="2"
-            Grid.Column="1"
+            Grid.Column="2"
             Grid.ColumnSpan="3"
             Text="{Binding Path=Model.Note,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
 

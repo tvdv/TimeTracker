@@ -55,9 +55,11 @@ namespace TimeTracker.TagSelector
                 if (TagDetector.IsValidTag(word))
                 {
                     //remove word
+                    e.Handled = true;
                     if (tb.SelectionStart >= tb.Text.Length)
                     {
                         tb.Text = "";
+                        
                     }
                     else
                     {

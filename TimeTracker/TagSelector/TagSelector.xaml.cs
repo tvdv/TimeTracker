@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,28 +17,31 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using TimeTracker.Annotations;
 using TimeTracker.Model;
+using TimeTracker.TimeEntryView;
+using TimeTracker.util;
 
 namespace TimeTracker.TagSelector
 {
     /// <summary>
     /// Interaction logic for TagSelector.xaml
     /// </summary>
-    public partial class TagSelector : UserControl
+    public partial class TagSelector : UserControl,INotifyPropertyChanged
     {
         public static readonly DependencyProperty AvailableTagsProperty =
-            DependencyProperty.Register("AvailableTags", typeof (ObservableCollection<Tag>), typeof (TagSelector), new PropertyMetadata(default(ObservableCollection<Tag>)));
+            DependencyProperty.Register("AvailableTags", typeof (IEnumerable), typeof (TagSelector), new PropertyMetadata(default(ObservableCollection<Tag>)));
 
-        public ObservableCollection<Tag> AvailableTags
+        public IEnumerable AvailableTags
         {
-            get { return (ObservableCollection<Tag>) GetValue(AvailableTagsProperty); }
+            get { return (IEnumerable)GetValue(AvailableTagsProperty); }
             set { SetValue(AvailableTagsProperty, value); }
         }
+
         public static readonly DependencyProperty TagsProperty =
-            DependencyProperty.Register("Tags", typeof(IEnumerable), typeof(TagSelector), new PropertyMetadata(default(ObservableCollection<object>), DefaultValue));
+            DependencyProperty.Register("Tags", typeof(ObservableCollection<TimeEntryTagAssociationViewModel>), typeof(TagSelector), new PropertyMetadata(default(ObservableCollection<object>), DefaultValue));
 
         private static void DefaultValue(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            (dependencyObject as TagSelector).Reset(dependencyPropertyChangedEventArgs.NewValue as IEnumerable<object>);
+            (dependencyObject as TagSelector).Reset(dependencyPropertyChangedEventArgs.NewValue as ObservableCollection<TimeEntryTagAssociationViewModel>);
         }
 
         public static readonly DependencyProperty AddTagCommandProperty =
@@ -49,54 +53,30 @@ namespace TimeTracker.TagSelector
             set { SetValue(AddTagCommandProperty, value); }
         }
 
-        protected void Reset(IEnumerable objects)
+        protected void Reset(ObservableCollection<TimeEntryTagAssociationViewModel> objects)
         {
-            Items.CollectionChanged -= Items_CollectionChanged;
-            Items.Clear();
-            if (objects !=null)
-            {
-                foreach (var o in objects)
+
+            _items = new VmObservableCollection<TagSelectorItem, TimeEntryTagAssociationViewModel>(objects, o => new TagSelectorTagItem(o), (o, item)
+                                                                                                             =>
                 {
-                    Items.Add(new TagSelectorTagItem(o));
-                }
-            }
+                    var tagselItem = item as TagSelectorTagItem;
+                    if (tagselItem != null)
+                    {
+                        return tagselItem.Item == o;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                });
+           
 
-            Items.Add(new TagSelectorFreeTextItem(this));
+            _items.Add(new TagSelectorFreeTextItem(this));
 
-            Items.CollectionChanged += Items_CollectionChanged;
+            OnPropertyChanged("Items");
         }
         
-        void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            if (Tags == null)
-            {
-                return;
-            }
-            if (e.NewItems !=null)
-            {
-                foreach (var newItem in e.NewItems)
-                {
-                    var i = newItem as TagSelectorTagItem;
-                    if (i !=null)
-                    {
-                        AddTagCommand.Execute(i.Item);
-                    }
-                }
-            }
-
-            if (e.OldItems !=null)
-            {
-                foreach (var oldItem in e.OldItems)
-                {
-                    var i = oldItem as TagSelectorTagItem;
-                    if (i != null)
-                    {
-                        //TODO: execute remove command
-                    }
-                }
-            }
-        }
-
+       
 
         /// <summary>
         /// Collection of tags that are selected.
@@ -109,38 +89,55 @@ namespace TimeTracker.TagSelector
 
         /// <summary>
         /// Working set of items for the control.
+        /// TOOD: How to make using a generic type but Tags still be an ObservableCollection???
         /// </summary>
-        public ObservableCollection<TagSelectorItem> Items { get; protected set; }
+        public VmObservableCollection<TagSelectorItem, TimeEntryTagAssociationViewModel> Items
+        {
+            get { return _items; }
+        }
 
-        
+
+        private VmObservableCollection<TagSelectorItem, TimeEntryTagAssociationViewModel> _items;
+
         public TagSelector()
         {
-            Items=new ObservableCollection<TagSelectorItem>();
-            Reset(null);
+            _items = null;
             InitializeComponent();
         }
 
         private void c_Items_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.Key == Key.Delete)
+            {
+                if (c_Items.SelectedItem != null)
+                {
+                    
+                }
+            }
         }
 
-        public TagSelectorTagItem DetectAndAddTag(string txt)
+        public object DetectAndAddTag(string txt)
         {
             foreach (var tag in AvailableTags)
             {
                 if (tag.ToString().ToLower() == txt.ToLower())
                 {
-                    var tagwrapper = new TagSelectorTagItem(tag);
+                    AddTagCommand.Execute(tag);
 
-                    //TODO: check if it already exists, dont allow duplicates
-                    
-                    Items.Insert(Items.Count-1,tagwrapper);
-                    return tagwrapper;
+                    return tag;
                 }
             }
 
             return null;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName)); 
         }
     }
 
