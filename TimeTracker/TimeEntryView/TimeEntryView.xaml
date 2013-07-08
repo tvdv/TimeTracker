@@ -42,9 +42,12 @@
         </Grid.RowDefinitions>
         <Button 
             Margin="5"
-            Content="X" 
             CommandParameter="{Binding}"
-            Command="{Binding Path=DeleteCommand}"/>
+            Command="{Binding Path=DeleteCommand}">
+            <Image 
+                Height="20"
+                Source="/res/noun_project_7294.png"/>
+        </Button>
         <DatePicker 
             Grid.Column="1"
             SelectedDate="{Binding Path=Day,Mode=TwoWay}"></DatePicker>
@@ -64,7 +67,9 @@
                Text="{Binding Path=Length,Mode=OneWay}"/>
         
         <TextBlock
-            Grid.Column="5" Text="Tags:"></TextBlock>
+            Grid.Column="5" Text="Tags:"
+            VerticalAlignment="Center"
+            />
         <tagSelector:TagSelector
             Grid.Column="6"
             AvailableTags="{Binding Path=AvailableTags,Mode=OneWay}"
