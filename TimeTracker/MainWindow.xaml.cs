@@ -21,10 +21,11 @@ namespace TimeTracker
                 Directory.CreateDirectory(dir);
             }
             _model = new Model.Model(dir, this.Dispatcher);
-            _viewModel=new ViewModel(_model);
-            DataContext = _viewModel;
+            DataContext = _viewModel = new ViewModel(_model);
 
             InitializeComponent();
+
+            _viewModel.RefreshView();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)

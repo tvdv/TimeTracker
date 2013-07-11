@@ -14,14 +14,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"/>
                 <ResourceDictionary>
-                    <CollectionViewSource Source="{Binding Path=Entries}"
-                                          x:Key="EntriesSource"
-                                          >
-                        <CollectionViewSource.SortDescriptions>
-                            <componentModel:SortDescription  PropertyName="Model.Start"/>
-                        </CollectionViewSource.SortDescriptions>
-                        
-                    </CollectionViewSource>
+                    
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
@@ -46,10 +39,13 @@
                         <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top">
                             <Button Command="{Binding Path=AddEntryCommand}">Add Entry</Button>
+
+                            <Button Command="{Binding Path=ViewTodayCommand}">Show Today</Button>
+                            <Button Command="{Binding Path=ViewAllCommand}">Show All</Button>
                         </StackPanel>
-                        <ItemsControl
-                            ItemsSource="{Binding Source={StaticResource EntriesSource}}">
-                        </ItemsControl></DockPanel>
+                        <ListView
+                            ItemsSource="{Binding Path=Entries,Mode=OneWay}">
+                        </ListView></DockPanel>
                 </TabItem>
                 <TabItem Header="Tags">
                     <DockPanel>
