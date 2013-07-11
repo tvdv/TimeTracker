@@ -69,6 +69,9 @@
     <Compile Include="TimeEntryView\TimeEntryView.xaml.cs">
       <DependentUpon>TimeEntryView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Transforms\ICSVTransform.cs" />
+    <Compile Include="Transforms\Report.cs" />
+    <Compile Include="Transforms\WeekCSV.cs" />
     <Compile Include="util\RelayCommand.cs" />
     <Compile Include="util\VMObservableCollection.cs" />
     <Compile Include="ViewModel.cs" />

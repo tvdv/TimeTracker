@@ -47,9 +47,9 @@
                             DockPanel.Dock="Top">
                             <Button Command="{Binding Path=AddEntryCommand}">Add Entry</Button>
                         </StackPanel>
-                        <ItemsControl
+                        <ListView
                             ItemsSource="{Binding Source={StaticResource EntriesSource}}">
-                        </ItemsControl></DockPanel>
+                        </ListView></DockPanel>
                 </TabItem>
                 <TabItem Header="Tags">
                     <DockPanel>
@@ -60,6 +60,17 @@
                         <ItemsControl
                             ItemsSource="{Binding Path=Tags,Mode=OneWay}"
                             />
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Reports">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Top">
+                            <Button Command="{Binding Path=ThisWeekCSVCommand}">This Week CSV</Button>
+                        </StackPanel>
+                        <TextBox 
+                            FontFamily="Courier New"
+                            Text="{Binding Path=LastCSVReport,Mode=OneWay}"/>
                     </DockPanel>
                 </TabItem>
             </TabControl.Items>

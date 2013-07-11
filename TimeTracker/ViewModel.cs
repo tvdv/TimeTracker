@@ -9,6 +9,7 @@ using System.Windows.Input;
 using TimeTracker.Annotations;
 using TimeTracker.Model;
 using TimeTracker.TimeEntryView;
+using TimeTracker.Transforms;
 using TimeTracker.util;
 
 namespace TimeTracker
@@ -16,6 +17,7 @@ namespace TimeTracker
     class ViewModel : INotifyPropertyChanged
     {
         private readonly Model.Model _model;
+        string _lastCSVReport;
 
         private VmObservableCollection<TimeEntryEditViewModel, TimeEntry> _entryVms; 
         public ViewModel(Model.Model model)
@@ -56,7 +58,22 @@ namespace TimeTracker
             }
         }
 
+        public ICommand ThisWeekCSVCommand
+        {
+            get
+            {
+                return new RelayCommand(() => { var r = Report.CreateWeekCSVReport(_model); _lastCSVReport = r.GenerateReport(); OnPropertyChanged("LastCSVReport"); });
+            }
 
+        }
+
+        public String LastCSVReport
+        {
+            get
+            {
+                return _lastCSVReport;
+            }
+        }
 
         public ICommand SaveCommand
         {
