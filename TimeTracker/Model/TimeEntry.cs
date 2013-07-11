@@ -13,7 +13,8 @@ namespace TimeTracker.Model
         public TimeEntry()
         {
             Tags=new ObservableCollection<Tag>();
-            Start = DateTime.Now;
+            var now = DateTime.Now;
+            Start = new DateTime(now.Year,now.Month,now.Day,now.Hour,now.Minute,now.Second,0);
             End = Start;
 
         }
