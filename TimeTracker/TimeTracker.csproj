@@ -64,6 +64,7 @@
     <Compile Include="TagSelector\TagSelectorTextEntry.xaml.cs">
       <DependentUpon>TagSelectorTextEntry.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TimeEntryViewModel.cs" />
     <Compile Include="TimeEntryView\TimeEntryEditViewModel.cs" />
     <Compile Include="TimeEntryView\TimeEntryTagAssociationViewModel.cs" />
     <Compile Include="TimeEntryView\TimeEntryView.xaml.cs">
@@ -72,6 +73,7 @@
     <Compile Include="Transforms\ICSVTransform.cs" />
     <Compile Include="Transforms\Report.cs" />
     <Compile Include="Transforms\WeekCSV.cs" />
+    <Compile Include="util\DateTimeToFriendlyDayConverter.cs" />
     <Compile Include="util\RelayCommand.cs" />
     <Compile Include="util\VMObservableCollection.cs" />
     <Compile Include="ViewModel.cs" />

@@ -5,6 +5,7 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Data;
 using System.Windows.Input;
 using TimeTracker.Annotations;
 using TimeTracker.Model;
@@ -18,6 +19,8 @@ namespace TimeTracker
     {
         private readonly Model.Model _model;
         string _lastCSVReport;
+        ICollectionView _timeEntryViewSource;
+
 
         private VmObservableCollection<TimeEntryEditViewModel, TimeEntry> _entryVms; 
         public ViewModel(Model.Model model)
@@ -28,6 +31,10 @@ namespace TimeTracker
             _entryVms = new VmObservableCollection<TimeEntryEditViewModel, TimeEntry>(_model.Entries, entry => new TimeEntryEditViewModel(entry, this.Tags, this.RemoveEntryCommand),
                 (modelentry, vm) => vm.Model==modelentry);
 
+            _timeEntryViewSource = CollectionViewSource.GetDefaultView(_entryVms);
+            _timeEntryViewSource.SortDescriptions.Add(new SortDescription("Model.Start", ListSortDirection.Ascending));
+            _timeEntryViewSource.GroupDescriptions.Add(new PropertyGroupDescription("Day"));
+            
         }
 
       
@@ -39,10 +46,16 @@ namespace TimeTracker
                 OnPropertyChanged("State");
             }
         }
-        
-        public VmObservableCollection<TimeEntryEditViewModel, TimeEntry> Entries
+
+        public void RefreshView()
         {
-            get { return _entryVms; }
+            _timeEntryViewSource.Refresh();
+
+        }
+
+        public ICollectionView Entries
+        {
+            get { return _timeEntryViewSource; }
         }
 
         public ObservableCollection<Tag> Tags
@@ -67,11 +80,46 @@ namespace TimeTracker
 
         }
 
+
         public String LastCSVReport
+        {
+            get { return _lastCSVReport; }
+        }
+
+        public enum ShowEntries
+        {
+            All,
+            Today,
+            ThisWeek
+        };
+        public  void SetViewFilter(ShowEntries filterType)
+        {
+            switch(filterType)
+            {
+                case ShowEntries.All:
+                        _timeEntryViewSource.Filter=null;
+                    break;
+                case ShowEntries.Today:
+                    _timeEntryViewSource.Filter= new Predicate<object>(z=> ((TimeEntryEditViewModel)z).Day ==DateTime.Now.Date);
+                    break;
+                case ShowEntries.ThisWeek:
+                    break;
+            }
+            
+        }
+        public ICommand ViewAllCommand
         {
             get
             {
-                return _lastCSVReport;
+                return new RelayCommand(() => { SetViewFilter(ShowEntries.All); RefreshView(); });
+            }
+        }
+        public ICommand ViewTodayCommand
+        {
+            get
+            {
+                return new RelayCommand(() => { SetViewFilter(ShowEntries.Today); RefreshView(); });
+
             }
         }
 
