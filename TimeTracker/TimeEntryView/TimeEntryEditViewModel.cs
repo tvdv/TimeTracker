@@ -11,7 +11,7 @@ using TimeTracker.util;
 
 namespace TimeTracker.TimeEntryView
 {
-    public class TimeEntryEditViewModel : INotifyPropertyChanged
+    public class TimeEntryEditViewModel : INotifyPropertyChanged, IEditableObject
     {
         private readonly TimeEntry _entry;
         private readonly ObservableCollection<Tag> _availableTags;
@@ -102,6 +102,21 @@ namespace TimeTracker.TimeEntryView
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public void BeginEdit()
+        {
+            
+        }
+
+        public void EndEdit()
+        {
+            
+        }
+
+        public void CancelEdit()
+        {
+            
         }
     }
 }

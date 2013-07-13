@@ -29,6 +29,7 @@ namespace TimeTracker
                 (modelentry, vm) => vm.Model==modelentry);
 
             _timeEntryViewSource = CollectionViewSource.GetDefaultView(_entryVms);
+            
             _timeEntryViewSource.SortDescriptions.Add(new SortDescription("Model.Start", ListSortDirection.Ascending));
             _timeEntryViewSource.GroupDescriptions.Add(new PropertyGroupDescription("Day"));
             

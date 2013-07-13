@@ -18,6 +18,7 @@
                     <util:DateTimeToFriendlyDayConverter x:Key="DateTimeToFriendlyDayConverter"/>
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            <util:GroupAggregateLengthConverter x:Key="GroupAggregateLengthConverter" />
         </ResourceDictionary>
         
     </Window.Resources>
@@ -55,13 +56,27 @@
                             
                         </Grid>
                         <ListView
-                            
+                            x:Name="EntriesList"
+                            SelectionChanged="Selector_OnSelectionChanged"
                             ItemsSource="{Binding Path=Entries,Mode=OneWay}">
                             <ListView.GroupStyle>
                                 <GroupStyle>
                                     <GroupStyle.HeaderTemplate>
                                         <DataTemplate>
-                                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Path=Name,Converter={StaticResource DateTimeToFriendlyDayConverter}}"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Path=Name,Converter={StaticResource DateTimeToFriendlyDayConverter}}"/>
+                                                <TextBlock Margin="10,0,0,0"
+                                                           Foreground="LightGray"
+                                                           >
+                                                    <TextBlock.Text>
+                                                        <MultiBinding Converter="{StaticResource GroupAggregateLengthConverter}">
+                                                            <Binding Path="Items"/>
+                                                            <Binding Path="Name"/>
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </StackPanel>
+
                                         </DataTemplate>
                                     </GroupStyle.HeaderTemplate>
                                 </GroupStyle>

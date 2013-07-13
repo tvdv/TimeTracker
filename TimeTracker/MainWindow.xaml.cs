@@ -2,6 +2,8 @@
 using System.ComponentModel;
 using System.IO;
 using System.Windows;
+using System.Windows.Controls;
+using TimeTracker.TimeEntryView;
 
 namespace TimeTracker
 {
@@ -51,6 +53,20 @@ namespace TimeTracker
                 _closeSaveFinished = true;
                 Close();
             }
+        }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            IEditableCollectionView ecv = EntriesList.Items as IEditableCollectionView;
+            foreach (var removedItem in e.RemovedItems)
+            {
+                
+                ecv.EditItem(removedItem);
+                ecv.CommitEdit();    
+            }
+            
+            
         }
     }
 }
