@@ -12,6 +12,12 @@ namespace TimeTracker.Transforms
 {
     class Report
     {
+        public static Report CreateWeeklyTotalsReport(Model.Model sourceModel)
+        {
+            ICollectionView cvs = CollectionViewSource.GetDefaultView(sourceModel.Entries);
+            Report r = new Report(sourceModel, cvs, new WeeklyTotalsCSV());
+            return r;
+        }
         public static Report CreateWeekCSVReport(Model.Model sourceModel)
         {
             DateTime weekStart = DateTime.Now.Date;

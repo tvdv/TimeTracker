@@ -84,6 +84,9 @@
                         <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top">
                             <Button Command="{Binding Path=ThisWeekCSVCommand}">This Week CSV</Button>
+                            <Button Command="{Binding Path=WeeklyTotalsCSVCommand}">Weekly Totals CSV</Button>
+
+                            
                         </StackPanel>
                         <TextBox 
                             FontFamily="Courier New"

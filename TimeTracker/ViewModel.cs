@@ -80,6 +80,14 @@ namespace TimeTracker
 
         }
 
+        public ICommand WeeklyTotalsCSVCommand
+        {
+            get
+            {
+                return new RelayCommand(() => { var r = Report.CreateWeeklyTotalsReport(_model); _lastCSVReport = r.GenerateReport(); OnPropertyChanged("LastCSVReport"); });
+            }
+
+        }
 
         public String LastCSVReport
         {
