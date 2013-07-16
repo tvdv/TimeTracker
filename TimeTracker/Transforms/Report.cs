@@ -14,12 +14,19 @@ namespace TimeTracker.Transforms
     {
         public static Report CreateWeekCSVReport(Model.Model sourceModel)
         {
+            DateTime weekStart = DateTime.Now.Date;
+            while (weekStart.DayOfWeek != DayOfWeek.Monday)
+            {
+                weekStart = weekStart.AddDays(-1);
+            }
+            var weekEnd = weekStart.AddDays(7);
+
             ICollectionView cvs=CollectionViewSource.GetDefaultView(sourceModel.Entries);
             cvs.SortDescriptions.Add(new SortDescription("Start",ListSortDirection.Ascending));
             cvs.Filter = new Predicate<object>((o) =>
             {
                 TimeEntry t = o as TimeEntry;
-                if (t.Start >= new DateTime(2013, 07, 8) && t.Start <= new DateTime(2013, 07, 14))
+                if (t.Start >= weekStart && t.Start < weekEnd)
                 {
                     return true;
                 }
