@@ -14,7 +14,7 @@ namespace TimeTracker.Transforms
     {
         public static Report CreateWeeklyTotalsReport(Model.Model sourceModel)
         {
-            ICollectionView cvs = CollectionViewSource.GetDefaultView(sourceModel.Entries);
+            ICollectionView cvs = new CollectionView(sourceModel.Entries);
             Report r = new Report(sourceModel, cvs, new WeeklyTotalsCSV());
             return r;
         }
@@ -27,8 +27,10 @@ namespace TimeTracker.Transforms
             }
             var weekEnd = weekStart.AddDays(7);
 
-            ICollectionView cvs=CollectionViewSource.GetDefaultView(sourceModel.Entries);
+            ICollectionView cvs = new ListCollectionView(sourceModel.Entries);
+                
             cvs.SortDescriptions.Add(new SortDescription("Start",ListSortDirection.Ascending));
+            
             cvs.Filter = new Predicate<object>((o) =>
             {
                 TimeEntry t = o as TimeEntry;
