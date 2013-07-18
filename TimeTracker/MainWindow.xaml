@@ -49,6 +49,7 @@
                             <StackPanel Orientation="Horizontal" Grid.Column="2">
                                 <TextBlock Margin="3,0,3,0" VerticalAlignment="Center" Text="Show:"></TextBlock>
                                 <Button Margin="3,0,3,0"  Command="{Binding Path=ViewTodayCommand}">Show Today</Button>
+                                <Button Margin="3,0,3,0"  Command="{Binding Path=ViewThisWeekCommand}">Show This Week</Button>
                                 <Button Margin="3,0,3,0" Command="{Binding Path=ViewAllCommand}">Show All</Button>
                             </StackPanel>
                         </Grid>

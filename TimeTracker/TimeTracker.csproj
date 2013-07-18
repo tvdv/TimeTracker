@@ -74,6 +74,7 @@
     <Compile Include="Transforms\Report.cs" />
     <Compile Include="Transforms\WeekCSV.cs" />
     <Compile Include="Transforms\WeeklyTotalsCSV.cs" />
+    <Compile Include="util\DateTimeExtensions.cs" />
     <Compile Include="util\DateTimeToFriendlyDayConverter.cs" />
     <Compile Include="util\RelayCommand.cs" />
     <Compile Include="util\VMObservableCollection.cs" />

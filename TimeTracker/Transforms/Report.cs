@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using TimeTracker.Model;
-
+using TimeTracker.util;
 namespace TimeTracker.Transforms
 {
     class Report
@@ -18,13 +18,11 @@ namespace TimeTracker.Transforms
             Report r = new Report(sourceModel, cvs, new WeeklyTotalsCSV());
             return r;
         }
+
+        
         public static Report CreateWeekCSVReport(Model.Model sourceModel)
         {
-            DateTime weekStart = DateTime.Now.Date;
-            while (weekStart.DayOfWeek != DayOfWeek.Monday)
-            {
-                weekStart = weekStart.AddDays(-1);
-            }
+            DateTime weekStart = DateTime.Now.WeekStart();
             var weekEnd = weekStart.AddDays(7);
 
             ICollectionView cvs = new ListCollectionView(sourceModel.Entries);

@@ -105,12 +105,15 @@ namespace TimeTracker
             switch(filterType)
             {
                 case ShowEntries.All:
-                        _timeEntryViewSource.Filter=null;
+                    _timeEntryViewSource.Filter=null;
                     break;
                 case ShowEntries.Today:
                     _timeEntryViewSource.Filter= new Predicate<object>(z=> ((TimeEntryEditViewModel)z).Day ==DateTime.Now.Date);
                     break;
                 case ShowEntries.ThisWeek:
+                    DateTime weekStart = DateTime.Now.WeekStart();
+                    var weekEnd = weekStart.AddDays(7);
+                    _timeEntryViewSource.Filter = new Predicate<object>(z => ((TimeEntryEditViewModel)z).Day >= weekStart && ((TimeEntryEditViewModel)z).Day < weekEnd);
                     break;
             }
             
@@ -120,6 +123,16 @@ namespace TimeTracker
             get
             {
                 return new RelayCommand(() => { SetViewFilter(ShowEntries.All); RefreshView(); });
+            }
+        }
+
+
+
+        public ICommand ViewThisWeekCommand
+        {
+            get
+            {
+                return new RelayCommand(() => { SetViewFilter(ShowEntries.ThisWeek); RefreshView(); });
             }
         }
         public ICommand ViewTodayCommand
