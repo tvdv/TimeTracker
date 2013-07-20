@@ -6,7 +6,7 @@
              xmlns:timeEntryView="clr-namespace:TimeTracker.TimeEntryView"
              xmlns:tagSelector="clr-namespace:TimeTracker.TagSelector" xmlns:model="clr-namespace:TimeTracker.Model"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="300" d:DataContext="{d:DesignInstance timeEntryView:TimeEntryEditViewModel}">
+             d:DesignHeight="50" d:DesignWidth="500" d:DataContext="{d:DesignInstance timeEntryView:TimeEntryEditViewModel}">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type timeEntryView:TimeEntryTagAssociationViewModel}">
             <Border BorderThickness="1" BorderBrush="LightSalmon" CornerRadius="1">
@@ -34,11 +34,12 @@
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>  
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition Height="5"/>
-            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="3"/>
         </Grid.RowDefinitions>
         <Button 
             Margin="5"
@@ -50,14 +51,17 @@
         </Button>
         <DatePicker 
             Grid.Column="1"
+            VerticalAlignment="Center"
             SelectedDate="{Binding Path=Day,Mode=TwoWay}"></DatePicker>
 
         <TextBox 
+            VerticalAlignment="Center"
             Grid.Column="2"
             Text="{Binding Path=StartTime,Mode=TwoWay}"></TextBox>
 
         <TextBox 
             Grid.Column="3"
+            VerticalAlignment="Center"
             Text="{Binding Path=EndTime,Mode=TwoWay}"></TextBox>
 
            <TextBlock 
@@ -72,14 +76,22 @@
             />
         <tagSelector:TagSelector
             Grid.Column="6"
+            VerticalAlignment="Center"
             AvailableTags="{Binding Path=AvailableTags,Mode=OneWay}"
             AddTagCommand="{Binding Path=AddTagCommand}"
             Tags="{Binding Path=AssociatedTags,Mode=OneWay}"
             />
+        <TextBlock
+            Margin="10,0,2,0"
+            Grid.Column="7" Text="Notes:"
+            VerticalAlignment="Center"
+            />
         <TextBox 
-            Grid.Row="2"
-            Grid.Column="2"
-            Grid.ColumnSpan="3"
+            Margin="5,0,5,0"
+            Grid.Column="8"
+            MinWidth="20"
+            MaxWidth="200"
+            VerticalAlignment="Center"
             Text="{Binding Path=Model.Note,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
 
     </Grid>

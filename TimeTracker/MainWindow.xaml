@@ -43,18 +43,18 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
-                                
+
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
                             <Button Command="{Binding Path=AddEntryCommand}">Add Entry</Button>
-
                             <StackPanel Orientation="Horizontal" Grid.Column="2">
                                 <TextBlock Margin="3,0,3,0" VerticalAlignment="Center" Text="Show:"></TextBlock>
                                 <Button Margin="3,0,3,0"  Command="{Binding Path=ViewTodayCommand}">Show Today</Button>
+                                <Button Margin="3,0,3,0"  Command="{Binding Path=ViewThisWeekCommand}">Show This Week</Button>
                                 <Button Margin="3,0,3,0" Command="{Binding Path=ViewAllCommand}">Show All</Button>
                             </StackPanel>
-                            
                         </Grid>
+                            
                         <ListView
                             x:Name="EntriesList"
                             SelectionChanged="Selector_OnSelectionChanged"
@@ -81,7 +81,8 @@
                                     </GroupStyle.HeaderTemplate>
                                 </GroupStyle>
                             </ListView.GroupStyle>
-                        </ListView></DockPanel>
+                        </ListView>
+                    </DockPanel>
                 </TabItem>
                 <TabItem Header="Tags">
                     <DockPanel>
@@ -92,6 +93,20 @@
                         <ItemsControl
                             ItemsSource="{Binding Path=Tags,Mode=OneWay}"
                             />
+                    </DockPanel>
+                </TabItem>
+                <TabItem Header="Reports">
+                    <DockPanel>
+                        <StackPanel Orientation="Horizontal"
+                            DockPanel.Dock="Top">
+                            <Button Command="{Binding Path=ThisWeekCSVCommand}">This Week CSV</Button>
+                            <Button Command="{Binding Path=WeeklyTotalsCSVCommand}">Weekly Totals CSV</Button>
+
+                            
+                        </StackPanel>
+                        <TextBox 
+                            FontFamily="Courier New"
+                            Text="{Binding Path=LastCSVReport,Mode=OneWay}"/>
                     </DockPanel>
                 </TabItem>
             </TabControl.Items>

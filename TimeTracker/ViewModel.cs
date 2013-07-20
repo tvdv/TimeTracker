@@ -10,6 +10,7 @@ using System.Windows.Input;
 using TimeTracker.Annotations;
 using TimeTracker.Model;
 using TimeTracker.TimeEntryView;
+using TimeTracker.Transforms;
 using TimeTracker.util;
 
 namespace TimeTracker
@@ -17,7 +18,9 @@ namespace TimeTracker
     class ViewModel : INotifyPropertyChanged
     {
         private readonly Model.Model _model;
+        string _lastCSVReport;
         ICollectionView _timeEntryViewSource;
+
 
         private VmObservableCollection<TimeEntryEditViewModel, TimeEntry> _entryVms; 
         public ViewModel(Model.Model model)
@@ -69,6 +72,28 @@ namespace TimeTracker
             }
         }
 
+        public ICommand ThisWeekCSVCommand
+        {
+            get
+            {
+                return new RelayCommand(() => { var r = Report.CreateWeekCSVReport(_model); _lastCSVReport = r.GenerateReport(); OnPropertyChanged("LastCSVReport"); });
+            }
+
+        }
+
+        public ICommand WeeklyTotalsCSVCommand
+        {
+            get
+            {
+                return new RelayCommand(() => { var r = Report.CreateWeeklyTotalsReport(_model); _lastCSVReport = r.GenerateReport(); OnPropertyChanged("LastCSVReport"); });
+            }
+
+        }
+
+        public String LastCSVReport
+        {
+            get { return _lastCSVReport; }
+        }
 
         public enum ShowEntries
         {
@@ -81,12 +106,15 @@ namespace TimeTracker
             switch(filterType)
             {
                 case ShowEntries.All:
-                        _timeEntryViewSource.Filter=null;
+                    _timeEntryViewSource.Filter=null;
                     break;
                 case ShowEntries.Today:
                     _timeEntryViewSource.Filter= new Predicate<object>(z=> ((TimeEntryEditViewModel)z).Day ==DateTime.Now.Date);
                     break;
                 case ShowEntries.ThisWeek:
+                    DateTime weekStart = DateTime.Now.WeekStart();
+                    var weekEnd = weekStart.AddDays(7);
+                    _timeEntryViewSource.Filter = new Predicate<object>(z => ((TimeEntryEditViewModel)z).Day >= weekStart && ((TimeEntryEditViewModel)z).Day < weekEnd);
                     break;
             }
             
@@ -98,11 +126,22 @@ namespace TimeTracker
                 return new RelayCommand(() => { SetViewFilter(ShowEntries.All); RefreshView(); });
             }
         }
+
+
+
+        public ICommand ViewThisWeekCommand
+        {
+            get
+            {
+                return new RelayCommand(() => { SetViewFilter(ShowEntries.ThisWeek); RefreshView(); });
+            }
+        }
         public ICommand ViewTodayCommand
         {
             get
             {
                 return new RelayCommand(() => { SetViewFilter(ShowEntries.Today); RefreshView(); });
+
             }
         }
 
