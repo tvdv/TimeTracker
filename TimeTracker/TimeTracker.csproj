@@ -79,6 +79,7 @@
     <Compile Include="util\GroupAggregateLengthConverter.cs" />
     <Compile Include="util\RelayCommand.cs" />
     <Compile Include="util\VMObservableCollection.cs" />
+    <Compile Include="util\WindowPlacement.cs" />
     <Compile Include="ViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
