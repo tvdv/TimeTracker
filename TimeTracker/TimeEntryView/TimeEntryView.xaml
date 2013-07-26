@@ -9,9 +9,14 @@
              d:DesignHeight="50" d:DesignWidth="500" d:DataContext="{d:DesignInstance timeEntryView:TimeEntryEditViewModel}">
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type timeEntryView:TimeEntryTagAssociationViewModel}">
-            <Border BorderThickness="1" BorderBrush="LightSalmon" CornerRadius="1">
-                <StackPanel Orientation="Horizontal">
+            <Border BorderThickness="1" BorderBrush="LightSalmon" CornerRadius="1"
+                    Focusable="False"
+                    >
+                <StackPanel Orientation="Horizontal"
+                            Focusable="False"
+                            >
                     <ContentControl
+                        Focusable="False"
                          Margin="3"
                         Content="{Binding Path=Tag,Mode=OneWay}"></ContentControl>
                     <Button 
