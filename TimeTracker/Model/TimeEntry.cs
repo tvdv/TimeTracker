@@ -44,6 +44,21 @@ namespace TimeTracker.Model
             }
         }
 
+        public TimeSpan Length
+        {
+            get
+            {
+                if (_end < _start)
+                {
+                    return TimeSpan.Zero;
+                }
+                else
+                {
+                    return _end - _start;    
+                }
+                
+            }
+        }
 
 
         public string Note
