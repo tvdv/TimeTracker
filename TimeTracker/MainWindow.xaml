@@ -59,6 +59,7 @@
                         <ListView
                             x:Name="EntriesList"
                             SelectionChanged="Selector_OnSelectionChanged"
+                            
                             ItemsSource="{Binding Path=Entries,Mode=OneWay}">
                             <ListView.GroupStyle>
                                 <GroupStyle>

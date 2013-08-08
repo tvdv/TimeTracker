@@ -78,6 +78,8 @@
     <Compile Include="util\DateTimeToFriendlyDayConverter.cs" />
     <Compile Include="util\GroupAggregateLengthConverter.cs" />
     <Compile Include="util\RelayCommand.cs" />
+    <Compile Include="util\TimedListCollectionView.cs" />
+    <Compile Include="util\TimeEntryComparer.cs" />
     <Compile Include="util\VMObservableCollection.cs" />
     <Compile Include="util\WindowPlacement.cs" />
     <Compile Include="ViewModel.cs" />

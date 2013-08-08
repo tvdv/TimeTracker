@@ -5,8 +5,10 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using TimeTracker.Annotations;
 using TimeTracker.Model;
 using TimeTracker.TimeEntryView;
@@ -18,24 +20,27 @@ namespace TimeTracker
     class ViewModel : INotifyPropertyChanged
     {
         private readonly Model.Model _model;
+        private readonly Dispatcher _dispatcher;
         string _lastCSVReport;
-        ICollectionView _timeEntryViewSource;
+        ListCollectionView _timeEntryViewSource;
 
 
         private VmObservableCollection<TimeEntryEditViewModel, TimeEntry> _entryVms; 
-        public ViewModel(Model.Model model)
+        public ViewModel(Model.Model model,Dispatcher dispatcher)
         {
             _model = model;
+            _dispatcher = dispatcher;
             _model.PropertyChanged += _model_PropertyChanged;
 
             _entryVms = new VmObservableCollection<TimeEntryEditViewModel, TimeEntry>(_model.Entries, entry => new TimeEntryEditViewModel(entry, this.Tags, this.RemoveEntryCommand),
                 (modelentry, vm) => vm.Model==modelentry);
 
-            _timeEntryViewSource = CollectionViewSource.GetDefaultView(_entryVms);
+            _timeEntryViewSource = new ListCollectionView(_entryVms);
+
             
-            _timeEntryViewSource.SortDescriptions.Add(new SortDescription("Model.Start", ListSortDirection.Ascending));
+            _timeEntryViewSource.CustomSort = new util.TimeEntryComparer();
+
             _timeEntryViewSource.GroupDescriptions.Add(new PropertyGroupDescription("Day"));
-            
         }
 
       
@@ -50,8 +55,16 @@ namespace TimeTracker
 
         public void RefreshView()
         {
-            _timeEntryViewSource.Refresh();
 
+            System.Diagnostics.Debug.WriteLine("Refresh start" + DateTime.Now);
+            _timeEntryViewSource.Refresh();
+            System.Diagnostics.Debug.WriteLine("Refresh end" + DateTime.Now);
+            _dispatcher.BeginInvoke(DispatcherPriority.Background,
+                                    new Action(
+                                        () =>
+                                        System.Diagnostics.Debug.WriteLine("Refresh end - disaptcher idle" +
+                                                                           DateTime.Now)));
+            
         }
 
         public ICollectionView Entries
