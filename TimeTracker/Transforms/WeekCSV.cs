@@ -32,6 +32,11 @@ namespace TimeTracker.Transforms
                 var dayDict=output[te.Start.Date];
 
                 var billingTag=te.Tags.FirstOrDefault(t => t.Type == Tag.TagType.BillingCode);
+                if (billingTag == null)
+                {
+                    //no billing code tag, ignore the item
+                    continue;
+                }
 
                 if (!dayDict.ContainsKey(billingTag))
                 {

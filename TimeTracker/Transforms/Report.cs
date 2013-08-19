@@ -23,6 +23,8 @@ namespace TimeTracker.Transforms
         public static Report CreateWeekCSVReport(Model.Model sourceModel)
         {
             DateTime weekStart = DateTime.Now.WeekStart();
+
+
             var weekEnd = weekStart.AddDays(7);
 
             ICollectionView cvs = new ListCollectionView(sourceModel.Entries);

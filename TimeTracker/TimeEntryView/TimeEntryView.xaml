@@ -21,7 +21,9 @@
                         Content="{Binding Path=Tag,Mode=OneWay}"></ContentControl>
                     <Button 
                         Margin="3"
-                        Content="X" Command="{Binding Path=DeleteAssociationCommand}" CommandParameter="{Binding Path=Tag}"/>
+                        Content="X" 
+                        ToolTip="Remove Tag"
+                        Command="{Binding Path=DeleteAssociationCommand}" CommandParameter="{Binding Path=Tag}"/>
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -94,7 +96,7 @@
         <TextBox 
             Margin="5,0,5,0"
             Grid.Column="8"
-            MinWidth="20"
+            MinWidth="80"
             MaxWidth="200"
             VerticalAlignment="Center"
             Text="{Binding Path=Model.Note,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"></TextBox>
