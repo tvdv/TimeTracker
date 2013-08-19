@@ -86,7 +86,7 @@ namespace TimeTracker.TimeEntryView
 
         public TimeSpan Length
         {
-            get { return _entry.End - _entry.Start; }
+            get { return _entry.Length; }
         }
 
         public ObservableCollection<Tag> AvailableTags

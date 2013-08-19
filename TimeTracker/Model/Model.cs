@@ -106,6 +106,7 @@ namespace TimeTracker.Model
         }
         void LoadThread(object state)
         {
+            System.Diagnostics.Debug.WriteLine("Load Thread start"  + DateTime.Now.ToLongTimeString());
             var file = state.ToString();
 
             LoadTags(TagFile);
@@ -149,6 +150,7 @@ namespace TimeTracker.Model
                 }
             }
 
+            System.Diagnostics.Debug.WriteLine("Load Thread done" + DateTime.Now.ToLongTimeString());
             _dispatcher.BeginInvoke(new Action(() => State = ModelState.Loaded));
             
         }

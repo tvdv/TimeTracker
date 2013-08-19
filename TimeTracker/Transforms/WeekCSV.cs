@@ -38,13 +38,18 @@ namespace TimeTracker.Transforms
                     continue;
                 }
 
+                if (billingTag == null)
+                {
+                    continue;
+                }
+
                 if (!dayDict.ContainsKey(billingTag))
                 {
                     dayDict[billingTag] = new DayCodeEntry();
                 }
 
                 var dayCodeEntry = dayDict[billingTag];
-                dayCodeEntry.Time= dayCodeEntry.Time.Add(te.End - te.Start);
+                dayCodeEntry.Time= dayCodeEntry.Time.Add(te.Length);
 
                 if (!String.IsNullOrWhiteSpace(te.Note))
                 {

@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using System.Xml;
 using System.Xml.Serialization;
 using TimeTracker.Properties;
@@ -29,11 +30,11 @@ namespace TimeTracker
                 Directory.CreateDirectory(dir);
             }
             _model = new Model.Model(dir, this.Dispatcher);
-            DataContext = _viewModel = new ViewModel(_model);
+            DataContext = _viewModel = new ViewModel(_model,this.Dispatcher);
 
             InitializeComponent();
 
-            _viewModel.RefreshView();
+            //_viewModel.RefreshView();
         }
 
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -106,7 +107,7 @@ namespace TimeTracker
         private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
-            IEditableCollectionView ecv = EntriesList.Items as IEditableCollectionView;
+            var ecv = EntriesList.Items as IEditableCollectionView;
             foreach (var removedItem in e.RemovedItems)
             {
                 
