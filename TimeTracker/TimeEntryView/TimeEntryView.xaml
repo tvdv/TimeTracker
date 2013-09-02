@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:timeEntryView="clr-namespace:TimeTracker.TimeEntryView"
              xmlns:tagSelector="clr-namespace:TimeTracker.TagSelector" xmlns:model="clr-namespace:TimeTracker.Model"
+             xmlns:util="clr-namespace:TimeTracker.util"
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="500" d:DataContext="{d:DesignInstance timeEntryView:TimeEntryEditViewModel}">
     <UserControl.Resources>
@@ -59,17 +60,24 @@
             VerticalAlignment="Center"
             SelectedDate="{Binding Path=Day,Mode=TwoWay}"></DatePicker>
 
-        <TextBox 
+        <!--<TextBox 
             VerticalAlignment="Center"
             Grid.Column="2"
-            Text="{Binding Path=StartTime,Mode=TwoWay}"></TextBox>
+            Text="{Binding Path=StartTime,Mode=TwoWay}"></TextBox>-->
+        <util:TimeEntryControl  Grid.Column="2"
+                                VerticalAlignment="Center"
+                                Value="{Binding Path=StartTime,Mode=TwoWay}"/>
 
-        <TextBox 
+        <!--<TextBox 
             Grid.Column="3"
             VerticalAlignment="Center"
-            Text="{Binding Path=EndTime,Mode=TwoWay}"></TextBox>
+            Text="{Binding Path=EndTime,Mode=TwoWay}"></TextBox>-->
 
-           <TextBlock 
+        <util:TimeEntryControl  Grid.Column="3"
+                                VerticalAlignment="Center"
+                                Value="{Binding Path=EndTime,Mode=TwoWay}"/>
+
+        <TextBlock 
                VerticalAlignment="Center"
                Margin="3"
                Grid.Column="4"
