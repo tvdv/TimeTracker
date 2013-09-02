@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Threading;
 using LumenWorks.Framework.IO.Csv;
 using TimeTracker.Annotations;
+using TimeTracker.util;
 
 namespace TimeTracker.Model
 {
@@ -18,6 +19,7 @@ namespace TimeTracker.Model
         private readonly string _storageDir;
         private readonly Dispatcher _dispatcher;
         private ModelState _state;
+        private BulkAddObservableCollection<TimeEntry> _entries;
 
         internal enum ModelState
         {
@@ -41,7 +43,7 @@ namespace TimeTracker.Model
         public Model(string storageDir,Dispatcher dispatcher)
         {
             Tags=new ObservableCollection<Tag>();
-            Entries=new ObservableCollection<TimeEntry>();
+            _entries = new BulkAddObservableCollection<TimeEntry>();
             _storageDir = storageDir;
             _dispatcher = dispatcher;
             State = ModelState.Uninitialised;
@@ -109,6 +111,7 @@ namespace TimeTracker.Model
             System.Diagnostics.Debug.WriteLine("Load Thread start"  + DateTime.Now.ToLongTimeString());
             var file = state.ToString();
 
+            List<TimeEntry> newEntries=new List<TimeEntry>();
             LoadTags(TagFile);
             
             if (File.Exists(file))
@@ -143,13 +146,15 @@ namespace TimeTracker.Model
                             }
 
                         }
-
-                        _dispatcher.BeginInvoke(new Action(() => this.Entries.Add(entry)));
+                        
+                        newEntries.Add(entry);
+                        
 
                     }
                 }
             }
-
+            _dispatcher.BeginInvoke(new Action(() => _entries.AddRange(newEntries)));
+            
             System.Diagnostics.Debug.WriteLine("Load Thread done" + DateTime.Now.ToLongTimeString());
             _dispatcher.BeginInvoke(new Action(() => State = ModelState.Loaded));
             
@@ -259,7 +264,12 @@ namespace TimeTracker.Model
             _dispatcher.BeginInvoke(new Action(() => State = ModelState.Loaded));
         }
 
-        public ObservableCollection<TimeEntry> Entries { get; protected set; }
+        public BulkAddObservableCollection<TimeEntry> Entries
+        {
+            get { return _entries; }
+            protected set { _entries = value; }
+        }
+
         public ObservableCollection<Tag> Tags { get; protected set; }
 
 

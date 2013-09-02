@@ -18,8 +18,8 @@ namespace TimeTracker.Transforms
         public string GetCSV(System.ComponentModel.ICollectionView source)
         {
             
-            StringBuilder sb = new StringBuilder();
-            Dictionary<DateTime, Dictionary<Tag, DayCodeEntry>> output = new Dictionary<DateTime, Dictionary<Tag, DayCodeEntry>>();
+            var sb = new StringBuilder();
+            var output = new Dictionary<DateTime, Dictionary<Tag, DayCodeEntry>>();
             foreach (var item in source)
             {
 
