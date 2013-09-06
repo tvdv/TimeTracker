@@ -33,7 +33,6 @@ namespace TimeTracker.Transforms
             foreach (var week in WeeklyTotals)
             {
                 sb.Append(week.Key.ToShortDateString() + "," + Math.Round(week.Value.TotalHours, 3) + "\r\n");
-                
             }
 
 

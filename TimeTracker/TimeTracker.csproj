@@ -72,6 +72,7 @@
     </Compile>
     <Compile Include="Transforms\ICSVTransform.cs" />
     <Compile Include="Transforms\Report.cs" />
+    <Compile Include="Transforms\ThisWeekByBillingCode.cs" />
     <Compile Include="Transforms\WeekCSV.cs" />
     <Compile Include="Transforms\WeeklyTotalsCSV.cs" />
     <Compile Include="util\BulkAddObservableCollection.cs" />

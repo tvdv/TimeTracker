@@ -102,6 +102,7 @@
                         <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top">
                             <Button Command="{Binding Path=ThisWeekCSVCommand}">This Week CSV</Button>
+                            <Button Command="{Binding Path=ThisWeekBillingCommand}">This Week CSV, by Billing</Button>
                             <Button Command="{Binding Path=WeeklyTotalsCSVCommand}">Weekly Totals CSV</Button>
 
                             

@@ -85,6 +85,18 @@ namespace TimeTracker
             }
         }
 
+
+
+        public ICommand ThisWeekBillingCommand
+        {
+            get
+            {
+                return new RelayCommand(() => { var r = Report.CreateWeeklyBillingCSVReport(_model); _lastCSVReport = r.GenerateReport(); OnPropertyChanged("LastCSVReport"); });
+            }
+
+        }
+
+
         public ICommand ThisWeekCSVCommand
         {
             get

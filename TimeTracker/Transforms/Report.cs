@@ -19,6 +19,32 @@ namespace TimeTracker.Transforms
             return r;
         }
 
+        public static Report CreateWeeklyBillingCSVReport(Model.Model sourceModel)
+        {
+            DateTime weekStart = DateTime.Now.WeekStart();
+            var weekEnd = weekStart.AddDays(7);
+
+            ICollectionView cvs = new ListCollectionView(sourceModel.Entries);
+
+            cvs.SortDescriptions.Add(new SortDescription("Start", ListSortDirection.Ascending));
+
+            cvs.Filter = new Predicate<object>((o) =>
+            {
+                TimeEntry t = o as TimeEntry;
+                if (t.Start >= weekStart && t.Start < weekEnd)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            });
+
+            Report r = new Report(sourceModel, cvs, new ThisWeekByBillingCode());
+            return r;
+        }
+
         
         public static Report CreateWeekCSVReport(Model.Model sourceModel)
         {
