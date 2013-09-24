@@ -20,6 +20,7 @@ namespace TimeTracker.Model
         private readonly Dispatcher _dispatcher;
         private ModelState _state;
         private BulkAddObservableCollection<TimeEntry> _entries;
+        ManualResetEvent _mreTagsLoaded;
 
         internal enum ModelState
         {
@@ -47,6 +48,7 @@ namespace TimeTracker.Model
             _storageDir = storageDir;
             _dispatcher = dispatcher;
             State = ModelState.Uninitialised;
+            _mreTagsLoaded = new ManualResetEvent(false);
 
         }
 
@@ -104,16 +106,22 @@ namespace TimeTracker.Model
                     _dispatcher.BeginInvoke(new Action(() => this.Tags.Add(t)));
                 }
             }
+
+            _dispatcher.BeginInvoke(new Action(() => this._mreTagsLoaded.Set()));
          
         }
         void LoadThread(object state)
         {
             System.Diagnostics.Debug.WriteLine("Load Thread start"  + DateTime.Now.ToLongTimeString());
+            _mreTagsLoaded.Reset();
             var file = state.ToString();
 
             List<TimeEntry> newEntries=new List<TimeEntry>();
             LoadTags(TagFile);
-            
+
+            //make sure all the tags are loaded (by the mainthread)
+            _mreTagsLoaded.WaitOne();
+                        
             if (File.Exists(file))
             {
                 using (var csv = new CsvReader(new StreamReader(file), false))
