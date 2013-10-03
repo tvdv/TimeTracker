@@ -19,10 +19,8 @@ namespace TimeTracker.Transforms
             return r;
         }
 
-        public static Report CreateWeeklyBillingCSVReport(Model.Model sourceModel)
+        public static Report CreateWeeklyBillingCSVReport(Model.Model sourceModel,DateTime startDate,DateTime endDate)
         {
-            DateTime weekStart = DateTime.Now.WeekStart();
-            var weekEnd = weekStart.AddDays(7);
 
             ICollectionView cvs = new ListCollectionView(sourceModel.Entries);
 
@@ -31,7 +29,7 @@ namespace TimeTracker.Transforms
             cvs.Filter = new Predicate<object>((o) =>
             {
                 TimeEntry t = o as TimeEntry;
-                if (t.Start >= weekStart && t.Start < weekEnd)
+                if (t.Start >= startDate && t.Start < endDate)
                 {
                     return true;
                 }
@@ -46,12 +44,9 @@ namespace TimeTracker.Transforms
         }
 
         
-        public static Report CreateWeekCSVReport(Model.Model sourceModel)
+        public static Report CreatingBillingReportByDay(Model.Model sourceModel,DateTime startDate,DateTime endDate)
         {
-            DateTime weekStart = DateTime.Now.WeekStart();
-
-
-            var weekEnd = weekStart.AddDays(7);
+            
 
             ICollectionView cvs = new ListCollectionView(sourceModel.Entries);
                 
@@ -60,7 +55,7 @@ namespace TimeTracker.Transforms
             cvs.Filter = new Predicate<object>((o) =>
             {
                 TimeEntry t = o as TimeEntry;
-                if (t.Start >= weekStart && t.Start < weekEnd)
+                if (t.Start >= startDate && t.Start < endDate)
                 {
                     return true;
                 }
@@ -70,7 +65,7 @@ namespace TimeTracker.Transforms
                 }
             });
 
-            Report r=new Report(sourceModel,cvs, new WeekCSV());
+            Report r=new Report(sourceModel,cvs, new BillingByDay());
             return r;
         }
         Model.Model _sourceModel;

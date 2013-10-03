@@ -21,13 +21,14 @@ namespace TimeTracker
     {
         private readonly Model.Model _model;
         private readonly Dispatcher _dispatcher;
-        string _lastCSVReport;
+        
         ListCollectionView _timeEntryViewSource;
-
+        private ReportViewModel _reportViewModel;
 
         private VmObservableCollection<TimeEntryEditViewModel, TimeEntry> _entryVms; 
         public ViewModel(Model.Model model,Dispatcher dispatcher)
         {
+            _reportViewModel = new ReportViewModel(model);
             _model = model;
             _dispatcher = dispatcher;
             _model.PropertyChanged += _model_PropertyChanged;
@@ -85,40 +86,15 @@ namespace TimeTracker
             }
         }
 
-
-
-        public ICommand ThisWeekBillingCommand
+        public ReportViewModel ReportViewModel
         {
             get
             {
-                return new RelayCommand(() => { var r = Report.CreateWeeklyBillingCSVReport(_model); _lastCSVReport = r.GenerateReport(); OnPropertyChanged("LastCSVReport"); });
+                return _reportViewModel;
             }
-
         }
 
-
-        public ICommand ThisWeekCSVCommand
-        {
-            get
-            {
-                return new RelayCommand(() => { var r = Report.CreateWeekCSVReport(_model); _lastCSVReport = r.GenerateReport(); OnPropertyChanged("LastCSVReport"); });
-            }
-
-        }
-
-        public ICommand WeeklyTotalsCSVCommand
-        {
-            get
-            {
-                return new RelayCommand(() => { var r = Report.CreateWeeklyTotalsReport(_model); _lastCSVReport = r.GenerateReport(); OnPropertyChanged("LastCSVReport"); });
-            }
-
-        }
-
-        public String LastCSVReport
-        {
-            get { return _lastCSVReport; }
-        }
+       
 
         public enum ShowEntries
         {

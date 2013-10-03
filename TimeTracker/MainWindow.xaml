@@ -98,13 +98,17 @@
                     </DockPanel>
                 </TabItem>
                 <TabItem Header="Reports">
-                    <DockPanel>
+                    <DockPanel DataContext="{Binding Path=ReportViewModel}">
                         <StackPanel Orientation="Horizontal"
                             DockPanel.Dock="Top">
-                            <Button Command="{Binding Path=ThisWeekCSVCommand}">This Week CSV</Button>
-                            <Button Command="{Binding Path=ThisWeekBillingCommand}">This Week CSV, by Billing</Button>
-                            <Button Command="{Binding Path=WeeklyTotalsCSVCommand}">Weekly Totals CSV</Button>
+                            <Button Command="{Binding Path=ByDayCommand}">By day</Button>
+                            <Button Command="{Binding Path=ByBillingCodeCommand}">By billing code</Button>
+                            <Button Command="{Binding Path=WeeklyTotalsCSVCommand}">Weekly Totals</Button>
 
+                            <TextBlock Margin="5,0,0,0" Text="Start Date (inclusive):" VerticalAlignment="Center"/>
+                            <DatePicker SelectedDate="{Binding Path=StartDate,Mode=TwoWay}"/>
+                            <TextBlock Margin="5,0,0,0" Text="End Date (exclusive):" VerticalAlignment="Center"/>
+                            <DatePicker SelectedDate="{Binding Path=EndDate,Mode=TwoWay}"/>
                             
                         </StackPanel>
                         <TextBox 

@@ -8,7 +8,7 @@ using TimeTracker.Model;
 namespace TimeTracker.Transforms
 {
 
-    public class WeekCSV : ICSVTransform
+    public class BillingByDay : ICSVTransform
     {
         struct DayCodeEntry
         {
