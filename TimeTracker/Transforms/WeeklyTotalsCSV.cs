@@ -13,18 +13,33 @@ namespace TimeTracker.Transforms
         {
             //DateTime is the SUNDAY at the end of the week
             //Does not account for TimeEntries that flow OVER a weekend between two weeks!
+            var WeeklyTotalsBillOnly = new Dictionary<DateTime, TimeSpan>();
             var WeeklyTotals = new Dictionary<DateTime, TimeSpan>();
             foreach (var item in source)
             {
                 var te = item as TimeEntry;
                 var endOfWeek=GetEndOfWeek(te.Start);
+                var len=te.End - te.Start;
+
                 if (!WeeklyTotals.ContainsKey(endOfWeek))
                 {
-                    WeeklyTotals.Add(endOfWeek, te.End - te.Start);
+                    WeeklyTotals.Add(endOfWeek, len);
                 }
                 else
                 {
-                    WeeklyTotals[endOfWeek] = WeeklyTotals[endOfWeek].Add(te.End - te.Start);
+                    WeeklyTotals[endOfWeek] = WeeklyTotals[endOfWeek].Add(len);
+                }
+
+                if (te.Tags.FirstOrDefault(z => z.Type == Tag.TagType.BillingCode) != null) //is it billable?
+                {
+                    if (!WeeklyTotalsBillOnly.ContainsKey(endOfWeek))
+                    {
+                        WeeklyTotalsBillOnly.Add(endOfWeek, len);
+                    }
+                    else
+                    {
+                        WeeklyTotalsBillOnly[endOfWeek] = WeeklyTotalsBillOnly[endOfWeek].Add(len);
+                    }
                 }
 
             }
@@ -36,8 +51,18 @@ namespace TimeTracker.Transforms
             }
 
 
+            sb.AppendLine();
+            sb.AppendLine("Billable time:");
+            foreach (var week in WeeklyTotalsBillOnly)
+            {
+                sb.Append(week.Key.ToShortDateString() + "," + Math.Round(week.Value.TotalHours, 3) + "\r\n");
+            }
+
+
             return sb.ToString();
         }
+
+        
 
         private DateTime GetEndOfWeek(DateTime dt)
         {

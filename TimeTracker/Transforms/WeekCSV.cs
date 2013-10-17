@@ -19,6 +19,7 @@ namespace TimeTracker.Transforms
         {
             
             var sb = new StringBuilder();
+
             var output = new Dictionary<DateTime, Dictionary<Tag, DayCodeEntry>>();
             foreach (var item in source)
             {

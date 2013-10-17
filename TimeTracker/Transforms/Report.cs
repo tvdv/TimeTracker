@@ -88,6 +88,9 @@ namespace TimeTracker.Transforms
             
 
             string output=_transform.GetCSV(_filter);
+
+            output += "\r\n\r\nReport generated " + DateTime.Now.ToLongDateString() + ", " + DateTime.Now.ToLongTimeString();
+
             return output;
         }
 
