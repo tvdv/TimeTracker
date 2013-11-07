@@ -42,6 +42,8 @@ namespace TimeTracker
             _timeEntryViewSource.CustomSort = new util.TimeEntryComparer();
 
             _timeEntryViewSource.GroupDescriptions.Add(new PropertyGroupDescription("Day"));
+
+            SetViewFilter(ShowEntries.ThisWeek);
         }
 
       
