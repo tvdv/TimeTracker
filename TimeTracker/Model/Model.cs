@@ -124,7 +124,7 @@ namespace TimeTracker.Model
                         
             if (File.Exists(file))
             {
-                using (var csv = new CsvReader(new StreamReader(file), false))
+                using (var csv = new CsvReader(new StreamReader(file), true))
                 {
                     csv.DefaultParseErrorAction=ParseErrorAction.AdvanceToNextLine;
                     //string[] headers = csv.GetFieldHeaders();
@@ -249,6 +249,11 @@ namespace TimeTracker.Model
 
             var fs=new FileStream(file,FileMode.Create,FileAccess.Write,FileShare.None);
             var tw=new StreamWriter(fs);
+
+            //Crude Hack to get around issue in CSV reader: it fixes the field count to what it finds at teh top of the file.
+            // so this hack sets an upper limit on the number of associated tags to a Time Entry
+            //TODO: fix the CSV reader so it picks up the fieldcount for each line
+            tw.WriteLine("start,end,note,tag1,tag2,tag3,tag4,tag5,tag6");
 
             foreach (var timeEntry in this.Entries)
             {
