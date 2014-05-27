@@ -92,9 +92,11 @@
                             DockPanel.Dock="Top">
                             <Button Command="{Binding Path=AddTagCommand}">Add Tag</Button>
                         </StackPanel>
+                        <ScrollViewer>
                         <ItemsControl
                             ItemsSource="{Binding Path=Tags,Mode=OneWay}"
                             />
+                        </ScrollViewer>
                     </DockPanel>
                 </TabItem>
                 <TabItem Header="Reports">
@@ -111,9 +113,11 @@
                             <DatePicker SelectedDate="{Binding Path=EndDate,Mode=TwoWay}"/>
                             
                         </StackPanel>
-                        <TextBox 
-                            FontFamily="Courier New"
-                            Text="{Binding Path=LastCSVReport,Mode=OneWay}"/>
+                        <ScrollViewer>
+                            <TextBox 
+                                FontFamily="Courier New"
+                                Text="{Binding Path=LastCSVReport,Mode=OneWay}"/>
+                        </ScrollViewer>
                     </DockPanel>
                 </TabItem>
             </TabControl.Items>
