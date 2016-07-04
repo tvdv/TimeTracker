@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using LumenWorks.Framework.IO.Csv;
 using TimeTracker.Annotations;
 using TimeTracker.util;
+using System.Globalization;
 
 namespace TimeTracker.Model
 {
@@ -21,6 +22,7 @@ namespace TimeTracker.Model
         private ModelState _state;
         private BulkAddObservableCollection<TimeEntry> _entries;
         ManualResetEvent _mreTagsLoaded;
+        readonly string _dateFormat = "yyyy-MM-ddTHH\\:mm\\:ss";
 
         internal enum ModelState
         {
@@ -133,8 +135,8 @@ namespace TimeTracker.Model
                         int fieldCount = csv.FieldCount;
 
                         var entry=new TimeEntry();
-                        entry.Start = DateTime.Parse(csv[0]);
-                        entry.End = DateTime.Parse(csv[1]);
+                        entry.Start = DateTime.ParseExact(csv[0], _dateFormat, CultureInfo.InvariantCulture);
+                        entry.End = DateTime.ParseExact(csv[1], _dateFormat, CultureInfo.InvariantCulture);
                         entry.Note = csv[2];
 
                         for (int i = 3; i < fieldCount; i++)
@@ -257,9 +259,9 @@ namespace TimeTracker.Model
 
             foreach (var timeEntry in this.Entries)
             {
-                tw.Write(timeEntry.Start); //TODO: Format date/time correctly (tz agnostic?)
+                tw.Write(timeEntry.Start.ToString(_dateFormat,CultureInfo.InvariantCulture));
                 tw.Write(",");
-                tw.Write(timeEntry.End);
+                tw.Write(timeEntry.End.ToString(_dateFormat, CultureInfo.InvariantCulture));
                 tw.Write(",");
                 tw.Write("\""+timeEntry.Note+"\"");
                 tw.Write(",");
